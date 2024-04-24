@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Conversation with OpenAI</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<script src="jquery.min.js"></script> <!-- https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js -->
+	<script type="text/javascript" src="showdown.min.js"></script> <!-- https://unpkg.com/showdown/dist/showdown.min.js -->
+	<style>
+		.user-question {
+			background-color: #f0f0f0;
+			padding: 8px;
+			margin: 5px 0;
+			border-radius: 4px;
+		}
+
+		.ai-response {
+			padding: 8px;
+			margin: 5px 0;
+			border-radius: 4px;
+		}
+
+		.loader {
+			border: 6px solid #f3f3f3; /* Light grey */
+			border-top: 6px solid #3498db; /* Blue */
+			border-radius: 50%;
+			width: 30px;
+			height: 30px;
+			animation: spin 2s linear infinite;
+			margin: 5px auto; /* Center the loader horizontally */
+			display: none; /* Ensure it is hidden initially */
+		}
+
+		@keyframes spin {
+			0% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+
+		input {
+			width: 80%;
+			height: 50px;
+		}
+	</style>
+</head>
+<body>
+	<div id="openai">
+		<h1>Conversation with OpenAI</h1>
+		<div id="messageArea" style="height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+			<!-- Messages will be added here -->
+			<div id="loader" class="loader" style="display: none;"></div>
+		</div>
+		<div id="userInterface">
+			<input type="text" id="userInput" placeholder="Enter your prompt" >
+			<!-- textarea  id="userInput" placeholder="Enter your prompt"  rows="3" cols="30"></!--textarea -->
+			<br />
+			<button id="sendButton">Send</button>
+		</div>
+	</div>
+	<script>
+		document.getElementById('userInput').addEventListener('keyup', function (event) {
+			if (event.code === "Enter" || event.code === "NumpadEnter") {
+				event.preventDefault();
+				document.getElementById('sendButton').click();
+			}
+		});
+
+		document.getElementById("sendButton").addEventListener("click", function () {
+			var userInput = document.getElementById("userInput").value;
+			var messageArea = document.getElementById("messageArea");
+			var loader = document.getElementById("loader");
+
+			if (userInput.trim() === "") {
+				alert("Please enter some text.");
+				return;
+			}
+
+			// Display user's question with specific styling
+			var userDiv = document.createElement('div');
+			userDiv.textContent = userInput;
+			userDiv.className = 'user-question';
+			document.getElementById("messageArea").appendChild(userDiv);
+			document.getElementById("messageArea").appendChild(loader);
+			loader.style.display = "block"; // Show the loader
+			// Scroll to the bottom of the message area
+			messageArea.scrollTop = messageArea.scrollHeight;
+
+			$.ajax({
+				url: 'OpenAIHandler.ashx',
+				type: 'POST',
+				data: { prompt: userInput },
+				success: function (jsonData) {
+					try {
+						loader.style.display = "none"; // Hide the loader once data is received
+						var converter = new showdown.Converter();
+						var message = jsonData.choices[0].message.content;
+						message = converter.makeHtml(message);
+						var messageDiv = document.createElement('div');
+						console.log(message); 
+						console.log(jsonData);
+						messageDiv.innerHTML = message; //.textContent
+						messageDiv.className = 'ai-response';
+						messageArea.appendChild(messageDiv);
+
+						// Scroll to the bottom of the message area
+						messageArea.scrollTop = messageArea.scrollHeight;
+					} catch (error) {
+						loader.style.display = "none"; // Hide the loader on error
+						console.error("Error handling response or updating DOM:", error);
+					}
+				},
+				error: function (xhr, status, error) {
+					loader.style.display = "none"; // Hide the loader on error
+					console.log("AJAX error:", error);
+				}
+			});
+			document.getElementById("userInput").value = ''
+		});
+
+		/*
+		function escapeHTML(text) {
+			'use strict';
+			return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		}
+		var markup = $("#messageArea").html();
+		var htmlContent = escapeHTML(markup);
+		$("#messageArea").text(htmlContent);
+		*/
+
+	</script>
+
+	<!-- Include the JavaScript files at bottom to avoid blocking UI >
+	<script src="messageInput.js" defer></script>
+	<script src="marked.min.js" defer></script>
+	<script src="messagesArea.js" defer></script>
+	<script src="controller.js" defer></script -->
+</body>
+</html>
