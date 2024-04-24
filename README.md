@@ -1,4 +1,4 @@
-## README.md for MAO, a Minimalistic Access to OpenAI 
+## README.md for OpenAI.NET, a Minimalistic Access to OpenAI 
 
 ### Overview
 This project intends to provide a minimalistic gateway for developers interested in a Web solution to access OpenAI. The example provided is in VB.NET. If you want another language, simply run the translation through any of the AI agents available; I was able to run it in C# and PHP with no problems. I unapologetically like VB.NET the most. 
