@@ -1,4 +1,6 @@
-# Development Tasks
+# Ignore this file if you are not working in the ALICE Project
+
+## Development Tasks
 Explore the agent functionality in the OpenAI API. Modify the code as needed. 
 
 The files Connection.vb and ALICESpecifications.md  are intended  for the development of the component for the ALICE project. They can be ignored by other users. 
