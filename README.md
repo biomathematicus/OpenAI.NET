@@ -1,7 +1,7 @@
-## README.md for OpenAI.NET, a Minimalistic Access to OpenAI 
+## README.md for OpenAI.NET, a Minimalist Access to OpenAI 
 
 ### Overview
-This project intends to provide a minimalistic gateway for developers interested in a Web solution to access OpenAI. The example provided is in VB.NET. If you want another language, simply run the translation through any of the AI agents available; I was able to run it in C# and PHP with no problems. I unapologetically like VB.NET the most. 
+This project intends to provide a minimalist gateway for developers interested in a Web solution to access OpenAI. The example provided is in VB.NET. If you want another language, simply run the translation through any of the AI agents available; I was able to run it in C# and PHP with no problems. I unapologetically like VB.NET the most. 
 
 ### Prerequisites
 - A modern web browser that supports HTML5 and JavaScript ES6.
@@ -14,8 +14,8 @@ Simply clone or download the repository to your local machine. Map the folder to
 ### File Structure
 - `openai.html`: The main HTML file that includes web component tags and links to JavaScript files.
 - `OpenAIHandler.ashx` : Server-side component communicating via AJAX with openai.html. 
-- `jquery.min.js` : jQuery v3.5.1
-- `showdown.min.js` : showdown v2.1.0
+- `jquery.min.js` : jQuery v3.5.1.  Library for AJAX calls. 
+- `showdown.min.js` : showdown v2.1.0. Library to format markdown into HTML.
 
 The last two files could be linked (the URL is commented out in source code); however, experience has shown me that it is better to secure all the source you need for your projects. As far as I can tell, there is no license violation. 
 
